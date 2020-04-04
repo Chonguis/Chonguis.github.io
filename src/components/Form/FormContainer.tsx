@@ -1,15 +1,7 @@
 import React, { Component, ChangeEvent, FormEvent } from 'react';
 import './FormContainer.css';
+import { countriesByContinent, statesArray } from './countries';
 
-const cars = [
-  {year:"2020", make:'Acura', model:'TLX'},
-  {year:"2020", make:'Acura', model:'RDX'},
-  {year:"2020", make:'Toyota', model:'Yaris'},
-  {year:"2020", make:'Toyota', model:'Corolla'},
-  {year:"2019", make:'Toyota', model:'Camry'},
-  {year:"2019", make:'BMW', model:'2 SERIES'},
-  {year:"2019", make:'BMW', model:'3 SERIES'},
-];
 const carsCascading: {
   [key: string]: {
     [key: string]: string[];
@@ -24,48 +16,36 @@ const carsCascading: {
     "Toyota": ["Camry"],
   },
 };
+
 const inputsData = [
   {id: 'firstName', label: 'First Name', type: 'text'},
   {id: 'lastName', label: 'Last Name', type: 'text'},
-  {id: 'phone', label: 'Phone' , type: 'phonenumber'},
-  {id: 'year', label: 'Year' , type: 'number'},
-  {id: 'make', label: 'Make'},
-  {id: 'model', label: 'Model'},
-  {id: 'color', label: 'Color', type: 'text'},
-  {id: 'plate', label: 'Plate', type: 'number'},      
+  {id: 'continent', label: 'Continent'},
+  {id: 'country', label: 'Country'},
+  {id: 'state', label: 'State'},
 ];
 
 interface State {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  year: string;
-  make: string;
-  model: string;
-  color: string;
-  plate: string;
+  continent: string;
+  country: string;
+  state: string;
   [key: string]: string;
 }
 
 interface Props {
-  onSubmitForm: (e: FormEvent<HTMLFormElement>, filterState: {}) => void;
+  onSubmitForm: (e: FormEvent<HTMLFormElement>, filterState: {country: string; state: string; continent: string;}) => void;
 }
 
-const selects: string[] = ['make', 'model', 'year'];
+const selects: string[] = ['continent', 'country', 'state'];
 
 class Form extends Component<Props, State> {
   constructor(props: any){
     super(props);
 
     this.state = {
-      firstName: '',
-      lastName: '',
-      phone: '',
-      year: '',
-      make: '',
-      model: '',
-      plate: '',
-      color: '',
+      continent: '',
+      country: '',
+      state: '',
     }
   }
 
@@ -78,18 +58,18 @@ class Form extends Component<Props, State> {
 
   onChangeSelect = (event: ChangeEvent<HTMLSelectElement>, id: string):void => {
     if (event.target.value) {
-      if (id === "year") {
+      if (id === "continent") {
         this.setState({
           ...this.state,
           [id]: event.target.value,
-          make: "",
-          model: "",
+          country: "",
+          state: "",
         });
-      } else if (id === "make") {
+      } else if (id === "country") {
         this.setState({
           ...this.state,
           [id]: event.target.value,
-          model: "",
+          state: "",
         });
       } else {
         this.setState({
@@ -101,35 +81,34 @@ class Form extends Component<Props, State> {
   }
 
   getOptions = (id: string): JSX.Element[] | undefined => {
-    if (id === "year"){
-      let options: JSX.Element[] = [<option value="" disabled>Year</option>];
-      let years: string[] = Object.keys(carsCascading);
-      years.map((year, i) => options.push(<option key={i + 1} value={year}>{year}</option>));
+    if (id === "continent"){
+      let options: JSX.Element[] = [<option value="" disabled>Continent</option>];
+      let continents: string[] = Object.keys(countriesByContinent);
+      continents.map((continent, i) => options.push(<option key={i + 1} value={continent}>{continent}</option>));
       options.push(<option value="other">Other</option>);
       if (options) return options;
     }
-    if (id === "make") {
-      if (this.state.year && this.state.year !== "other") {
-        let options: JSX.Element[] = [<option value="">Make</option>];
-        let makers: string[] = Object.keys(carsCascading[this.state.year]);
-        makers.map((make, i) => options.push(<option key={i + 1} value={make}>{make}</option>));
+    if (id === "country") {
+      if (this.state.continent && this.state.continent !== "other") {
+        let options: JSX.Element[] = [<option value="">Country</option>];
+        let countries: string[] = countriesByContinent[this.state.continent];
+        countries.map((country, i) => options.push(<option key={i + 1} value={country}>{country}</option>));
         options.push(<option value="other">Other</option>);
         if (options) return options;
       } else {
-        let options: JSX.Element[] = [<option value="" disabled>Make</option>];
+        let options: JSX.Element[] = [<option value="" disabled>Country</option>];
         if (options) return options;
       }
     }
-    if (id === "model") {
-      if (this.state.make && this.state.make !== "other" && this.state.year && this.state.year !== "other"){
-        let options: JSX.Element[] = [<option value="">Model</option>];
-        console.log(this.state.year, this.state.make);
-        let models: string[] = carsCascading[this.state.year][this.state.make];
-        models.map((model, i) => options.push(<option key={i + 1} value={model}>{model}</option>));
+    if (id === "state") {
+      if (this.state.country =="United States of America" && this.state.continent && this.state.continent !== "other"){
+        let options: JSX.Element[] = [<option value="">State</option>];
+        let states: string[] = statesArray;
+        states.map((state, i) => options.push(<option key={i + 1} value={state}>{state}</option>));
         options.push(<option value="other">Other</option>);
         if (options) return options;
       } else {
-        let options: JSX.Element[] = [<option value="" disabled>Model</option>];
+        let options: JSX.Element[] = [<option value="" disabled>State</option>];
         if (options) return options;
       }
     }
