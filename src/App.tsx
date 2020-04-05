@@ -4,7 +4,6 @@ import Form from './components/Form/FormContainer';
 import SubmittedFormPanel from './components/SubmittedFormPanel/SubmittedFormPanel';
 
 interface FormState {
-  continent: string;
   country: string;
   state: string;
 }
@@ -23,12 +22,11 @@ class App extends React.Component<{}, State> {
       formState: {
         country: '',
         state: '',      
-        continent: '',
       },
     }
   }
 
-  onSubmitForm = (e: FormEvent<HTMLFormElement>, formState: {country: string; state: string; continent: string;}) => {
+  onSubmitForm = (e: FormEvent<HTMLFormElement>, formState: {country: string; state: string;}) => {
     e.preventDefault();
     this.setState({
       submitted: true,

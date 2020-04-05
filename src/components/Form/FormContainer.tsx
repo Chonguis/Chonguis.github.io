@@ -1,32 +1,29 @@
 import React, { Component, ChangeEvent, FormEvent } from 'react';
 import './FormContainer.css';
-import { countriesByContinent, statesArray } from './countries';
+import { TextField } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
+import { allCountries, statesArray } from './countries';
 
 const inputsData = [
-  {id: 'continent', label: 'Continent'},
   {id: 'country', label: 'Country'},
   {id: 'state', label: 'State'},
 ];
 
 interface State {
-  continent: string;
   country: string;
   state: string;
   [key: string]: string;
 }
 
 interface Props {
-  onSubmitForm: (e: FormEvent<HTMLFormElement>, filterState: {country: string; state: string; continent: string;}) => void;
+  onSubmitForm: (e: FormEvent<HTMLFormElement>, filterState: {country: string; state: string;}) => void;
 }
-
-const selects: string[] = ['continent', 'country', 'state'];
 
 class Form extends Component<Props, State> {
   constructor(props: any){
     super(props);
 
     this.state = {
-      continent: '',
       country: '',
       state: '',
     }
@@ -39,61 +36,43 @@ class Form extends Component<Props, State> {
     });
   }
 
-  onChangeSelect = (event: ChangeEvent<HTMLSelectElement>, id: string):void => {
-    if (event.target.value) {
-      if (id === "continent") {
+  onChangeSelect = (event: ChangeEvent<{}>, value:string |  null, id: string):void => {
+    if (value) {
+      if (id === "country") {
         this.setState({
           ...this.state,
-          [id]: event.target.value,
-          country: "",
-          state: "",
-        });
-      } else if (id === "country") {
-        this.setState({
-          ...this.state,
-          [id]: event.target.value,
+          [id]: value,
           state: "",
         });
       } else {
         this.setState({
           ...this.state,
-          [id]: event.target.value,
+          [id]: value,
         });
       }
     }
   }
 
-  getOptions = (id: string): JSX.Element[] | undefined => {
-    if (id === "continent"){
-      let options: JSX.Element[] = [<option value="" disabled>Continent</option>];
-      let continents: string[] = Object.keys(countriesByContinent);
-      continents.map((continent, i) => options.push(<option key={i + 1} value={continent}>{continent}</option>));
-      options.push(<option value="other">Other</option>);
-      if (options) return options;
-    }
+  getOptions = (id: string): string[] => {
     if (id === "country") {
-      if (this.state.continent && this.state.continent !== "other") {
-        let options: JSX.Element[] = [<option value="">Country</option>];
-        let countries: string[] = countriesByContinent[this.state.continent];
-        countries.map((country, i) => options.push(<option key={i + 1} value={country}>{country}</option>));
-        options.push(<option value="other">Other</option>);
-        if (options) return options;
+      if (allCountries){
+        return allCountries;
       } else {
-        let options: JSX.Element[] = [<option value="" disabled>Country</option>];
-        if (options) return options;
-      }
+        return [""];
+      } 
     }
-    if (id === "state") {
-      if (this.state.country === "United States of America" && this.state.continent && this.state.continent !== "other"){
-        let options: JSX.Element[] = [<option value="">State</option>];
-        let states: string[] = statesArray;
-        states.map((state, i) => options.push(<option key={i + 1} value={state}>{state}</option>));
-        options.push(<option value="other">Other</option>);
-        if (options) return options;
+    else if (id === "state") {
+      if (this.state.country === "United States of America"){
+        if (statesArray){
+          return statesArray;
+        } else {
+          return [""];
+        }
       } else {
-        let options: JSX.Element[] = [<option value="" disabled>State</option>];
-        if (options) return options;
+        return [""];
       }
+    } else {
+      return [""];
     }
   }
 
@@ -104,11 +83,15 @@ class Form extends Component<Props, State> {
     inputsData.forEach(data => {
         inputsHTML.push(
           <div>
-            <label htmlFor={data.id}>{data.label}</label>
-            <br />
-            <select id={data.id} onChange={(e) => this.onChangeSelect(e, data.id)} value={this.state[data.id]}>
-              {this.getOptions(data.id)}
-            </select>
+            <Autocomplete
+              id="combo-box-demo"
+              options={this.getOptions(data.id)}
+              onChange={(event: ChangeEvent<{}>, value: string | null) => this.onChangeSelect(event, value, data.id)}
+              // getOptionLabel={(option) => option.title}
+              renderInput={(params) => <TextField {...params} label={data.label} variant="outlined" />}
+              value={this.state[data.id]}
+              disabled={this.getOptions(data.id)[0] === ""}
+            />
           </div>)
       })
 
