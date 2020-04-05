@@ -81,6 +81,8 @@ class Form extends Component<Props, State> {
     let inputsHTML: JSX.Element[] = [];
     
     inputsData.forEach(data => {
+      if (data.id === "state" && this.state.country !== "United States of America") return;
+      else {
         inputsHTML.push(
           <div>
             <Autocomplete
@@ -93,7 +95,8 @@ class Form extends Component<Props, State> {
               disabled={this.getOptions(data.id)[0] === ""}
             />
           </div>)
-      })
+      }
+    })
 
       return (
           <div className="container">
