@@ -2,24 +2,7 @@ import React, { Component, ChangeEvent, FormEvent } from 'react';
 import './FormContainer.css';
 import { countriesByContinent, statesArray } from './countries';
 
-const carsCascading: {
-  [key: string]: {
-    [key: string]: string[];
-  };
-} = {
-  "2020": {
-    "Acura": ["TLX", "RDX"],
-    "Toyota": ["Yaris", "Corolla"],
-  },
-  "2019": {
-    "BMW": ["2 SERIES", "3 SERIES"],
-    "Toyota": ["Camry"],
-  },
-};
-
 const inputsData = [
-  {id: 'firstName', label: 'First Name', type: 'text'},
-  {id: 'lastName', label: 'Last Name', type: 'text'},
   {id: 'continent', label: 'Continent'},
   {id: 'country', label: 'Country'},
   {id: 'state', label: 'State'},
@@ -101,7 +84,7 @@ class Form extends Component<Props, State> {
       }
     }
     if (id === "state") {
-      if (this.state.country =="United States of America" && this.state.continent && this.state.continent !== "other"){
+      if (this.state.country === "United States of America" && this.state.continent && this.state.continent !== "other"){
         let options: JSX.Element[] = [<option value="">State</option>];
         let states: string[] = statesArray;
         states.map((state, i) => options.push(<option key={i + 1} value={state}>{state}</option>));
@@ -119,17 +102,6 @@ class Form extends Component<Props, State> {
     let inputsHTML: JSX.Element[] = [];
     
     inputsData.forEach(data => {
-      if(!selects.includes(data.id)) {
-        inputsHTML.push(
-          <div>
-            <label htmlFor={data.id}>{data.label}</label>
-            <br />
-            <input type={data.type} id={data.id} onChange={(e) => this.onChangeInput(e, data.id)} />
-            <span>{this.state[data.id]}</span>
-            <br /><br />
-          </div>
-        )
-      } else {
         inputsHTML.push(
           <div>
             <label htmlFor={data.id}>{data.label}</label>
@@ -138,14 +110,11 @@ class Form extends Component<Props, State> {
               {this.getOptions(data.id)}
             </select>
           </div>)
-      }
       })
 
       return (
           <div className="container">
-              <p>Hello</p>
-
-              <form onSubmit={(e) => this.props.onSubmitForm(e, this.state)}>
+              <form className={"form"} onSubmit={(e) => this.props.onSubmitForm(e, this.state)}>
                 {inputsHTML}
                 <button type="submit">Submit</button>
               </form>

@@ -37,14 +37,17 @@ class App extends React.Component<{}, State> {
     console.log(formState, 'formState');
   } 
   render(){
+    let other = false;
+    if(this.state.formState.state === "other" || this.state.formState.country === "other"){
+      other = true;
+    }
     return (
       <div className="App">
         <header className="App-header">
             Learn React
         </header>
-  
+        {Object.keys(this.state.formState) && <SubmittedFormPanel formState={!other ? this.state.formState : null} />}
         <Form onSubmitForm={this.onSubmitForm} />
-        {Object.keys(this.state.formState) && <SubmittedFormPanel formState={this.state.formState} />}
       </div>
     );
   }

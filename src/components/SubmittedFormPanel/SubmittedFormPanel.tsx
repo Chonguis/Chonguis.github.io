@@ -1,12 +1,12 @@
 import React from 'react'
-import { render } from '@testing-library/react';
+import './SubmittedFormPanel.css';
 
 interface Props {
     formState: {
         continent: string;
         country: string;
         state: string;
-    }
+    } | null;
 }
 
 interface State {
@@ -16,6 +16,7 @@ interface State {
     death_cases: number | undefined;
     death_record_date: string | undefined;
 
+    country_name: string | undefined;
     total_cases: number | undefined;
     new_cases: number | undefined;
     active_cases: number | undefined;
@@ -37,6 +38,7 @@ class SubmittedFormPanel extends React.Component<Props, State> {
             death_cases: undefined,
             death_record_date: undefined,
 
+            country_name: undefined,
             total_cases: undefined,
             new_cases: undefined,
             active_cases: undefined,
@@ -48,52 +50,71 @@ class SubmittedFormPanel extends React.Component<Props, State> {
         };
     }
 
-    render(){
-        const { state, country } = this.props.formState;
-        if (state) {
-            fetch(`https://coronavirus-monitor.p.rapidapi.com/coronavirus/johns_hopkins_latest_usa_statistic_by_state.php?state=${state}`, {
-                    "method": "GET",
-                    "headers": {
-                        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-                        "x-rapidapi-key": "4781cadd8fmsh5bf0d6baa331ad3p1ab429jsnb80237845be3"
-                    }
-                })
-                .then(res => {
-                    res.json().then(data => {
-                        console.log(data);
-                        this.setState({
-                            state_name: data.usa_cases_by_state[0].state_name,
-                            cases_number: data.usa_cases_by_state[0].cases_number,
-                            cases_record_date: data.usa_cases_by_state[0].record_date,
-                            death_cases: data.usa_deaths[0].death_cases,
-                            death_record_date: data.usa_deaths[0].record,
+    componentWillReceiveProps(nextProps: Props){
+        if(nextProps.formState){
+            if (JSON.stringify(this.props) !== JSON.stringify(nextProps.formState)) {
+                const { state, country } = nextProps.formState;
+                if (nextProps.formState.state && nextProps.formState.state !== "other") {
+                    fetch(`https://coronavirus-monitor.p.rapidapi.com/coronavirus/johns_hopkins_latest_usa_statistic_by_state.php?state=${state}`, {
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+                                "x-rapidapi-key": "4781cadd8fmsh5bf0d6baa331ad3p1ab429jsnb80237845be3"
+                            }
                         })
-                    })
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        } else if (country) {
-            fetch(`https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php?country=${country}`, {
-                    "method": "GET",
-                    "headers": {
-                        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-                        "x-rapidapi-key": "4781cadd8fmsh5bf0d6baa331ad3p1ab429jsnb80237845be3"
-                    }
-                })
-                .then(res => {
-                    res.json().then(data => {
-                        console.log(data);
-                        // latest_stat_by_country[0].total_cases new_cases active_cases total_death new_deaths total_recovered total_cases_per1m record_date 
-                    })
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+                        .then(res => {
+                            res.json().then(data => {
+                                console.log(data);
+                                this.setState({
+                                    state_name: data.usa_cases_by_state[0].state_name,
+                                    cases_number: data.usa_cases_by_state[0].cases_number,
+                                    cases_record_date: data.usa_cases_by_state[0].record_date,
+                                    death_cases: data.usa_deaths[0].death_cases,
+                                    death_record_date: data.usa_deaths[0].record,
+                                })
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                } else {
+                    fetch(`https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php?country=${country}`, {
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+                                "x-rapidapi-key": "4781cadd8fmsh5bf0d6baa331ad3p1ab429jsnb80237845be3"
+                            }
+                        })
+                        .then(res => {
+                            res.json().then(data => {
+                                console.log(data);
+                                let latest_stats = data.latest_stat_by_country[0];
+                                this.setState({
+                                    total_cases: latest_stats.total_cases,
+                                    new_cases: latest_stats.new_cases,
+                                    active_cases: latest_stats.active_cases,
+                                    total_death: latest_stats.total_death,
+                                    new_deaths: latest_stats.new_deaths,
+                                    record_date: latest_stats.record_date,
+                                    total_cases_per1m: latest_stats.total_cases_per1m,
+                                    total_recovered: latest_stats.total_recovered,
+                                    country_name: latest_stats.country_name,
+
+                                })
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            }
         }
+    }
+
+    render(){
+
         return (
-            <div>
-                {JSON.stringify(this.props.formState)}
+            <div className="tableContainer">
                 <table>
                     <tbody>
                         <tr>
@@ -115,6 +136,46 @@ class SubmittedFormPanel extends React.Component<Props, State> {
                         <tr>
                             <td>Death Record Date</td>
                             <td>{this.state.death_record_date}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Country Name</td>
+                            <td>{this.state.country_name}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Cases</td>
+                            <td>{this.state.total_cases}</td>
+                        </tr>
+                        <tr>
+                            <td>New Cases</td>
+                            <td>{this.state.new_cases}</td>
+                        </tr>
+                        <tr>
+                            <td>Active Cases</td>
+                            <td>{this.state.active_cases}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Death</td>
+                            <td>{this.state.total_death}</td>
+                        </tr>
+                        <tr>
+                            <td>New Deaths</td>
+                            <td>{this.state.new_deaths}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Recovered</td>
+                            <td>{this.state.total_recovered}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Cases Per 1m</td>
+                            <td>{this.state.total_cases_per1m}</td>
+                        </tr>
+                        <tr>
+                            <td>Record Date</td>
+                            <td>{this.state.record_date}</td>
                         </tr>
                     </tbody>
                 </table>
