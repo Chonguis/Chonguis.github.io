@@ -1,5 +1,7 @@
 import React from 'react'
+import './DisplayResults.css';
 import FetchStateInterface from '../../interfaces/FetchStateInterface.interface';
+import Result from './Result';
 
 interface Props {
     fetchState: FetchStateInterface;
@@ -8,72 +10,48 @@ interface Props {
 const DisplayResults:React.FC<Props> = (props) => {
     return (
         <div>
+          {props.fetchState.activeSearch === "state" && <table>
+              <tbody>
+                  <tr>
+                      <td>State Name</td>
+                      <td>{props.fetchState.state_name}</td>
+                  </tr>
+                  <tr>
+                      <td>Cases Number</td>
+                      <td>{props.fetchState.cases_number}</td>
+                  </tr>
+                  <tr>
+                      <td>Cases Record Date</td>
+                      <td>{props.fetchState.cases_record_date}</td>
+                  </tr>
+                  <tr>
+                      <td>Death Cases</td>
+                      <td>{props.fetchState.death_cases}</td>
+                  </tr>
+                  <tr>
+                      <td>Death Record Date</td>
+                      <td>{props.fetchState.death_record_date}</td>
+                  </tr>
+              </tbody>
+          </table>}
 
-{props.fetchState.activeSearch === "state" && <table>
-                  <tbody>
-                      <tr>
-                          <td>State Name</td>
-                          <td>{props.fetchState.state_name}</td>
-                      </tr>
-                      <tr>
-                          <td>Cases Number</td>
-                          <td>{props.fetchState.cases_number}</td>
-                      </tr>
-                      <tr>
-                          <td>Cases Record Date</td>
-                          <td>{props.fetchState.cases_record_date}</td>
-                      </tr>
-                      <tr>
-                          <td>Death Cases</td>
-                          <td>{props.fetchState.death_cases}</td>
-                      </tr>
-                      <tr>
-                          <td>Death Record Date</td>
-                          <td>{props.fetchState.death_record_date}</td>
-                      </tr>
-                  </tbody>
-              </table>}
-              {props.fetchState.activeSearch === "country" && <table>
-                  <tbody>
-                      <tr>
-                          <td>Country Name</td>
-                          <td>{props.fetchState.country_name}</td>
-                      </tr>
-                      <tr>
-                          <td>Total Cases</td>
-                          <td>{props.fetchState.total_cases}</td>
-                      </tr>
-                      <tr>
-                          <td>New Cases</td>
-                          <td>{props.fetchState.new_cases}</td>
-                      </tr>
-                      <tr>
-                          <td>Active Cases</td>
-                          <td>{props.fetchState.active_cases}</td>
-                      </tr>
-                      <tr>
-                          <td>Total Death</td>
-                          <td>{props.fetchState.total_deaths}</td>
-                      </tr>
-                      <tr>
-                          <td>New Deaths</td>
-                          <td>{props.fetchState.new_deaths}</td>
-                      </tr>
-                      <tr>
-                          <td>Total Recovered</td>
-                          <td>{props.fetchState.total_recovered}</td>
-                      </tr>
-                      <tr>
-                          <td>Total Cases Per 1m</td>
-                          <td>{props.fetchState.total_cases_per1m}</td>
-                      </tr>
-                      <tr>
-                          <td>Record Date</td>
-                          <td>{props.fetchState.record_date}</td>
-                      </tr>
-                  </tbody>
-              </table>}
-            
+          {props.fetchState.activeSearch === "country" && 
+            <div className="displayResultsContainer">
+              <h1>{props.fetchState.country_name}</h1>
+              <small>{props.fetchState.record_date}</small>
+              <div className="resultsContainer">
+                <div className="groupResults">
+                  <Result data={props.fetchState.total_cases} label="Total Cases" />
+                  <Result data={props.fetchState.active_cases} label="Active Cases" />
+                </div>
+                <div className="groupResults">
+                  <Result data={props.fetchState.total_deaths} label="Total Deaths" />
+                  <Result data={props.fetchState.total_recovered} label="Total Recovered" />
+                </div>
+              </div>
+            </div>
+          }
+
         </div>
     )
 }

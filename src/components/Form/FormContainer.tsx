@@ -17,6 +17,7 @@ interface State {
 
 interface Props {
   onSubmitForm: (e: FormEvent<HTMLFormElement>, filterState: {country: string; state: string;}) => void;
+  submitted: boolean;
 }
 
 class Form extends Component<Props, State> {
@@ -84,7 +85,7 @@ class Form extends Component<Props, State> {
       if (data.id === "state" && this.state.country !== "United States of America") return;
       else {
         inputsHTML.push(
-          <div>
+          <div className="autocomplete">
             <Autocomplete
               id="combo-box-demo"
               options={this.getOptions(data.id)}
@@ -99,10 +100,10 @@ class Form extends Component<Props, State> {
     })
 
       return (
-          <div className="container">
+          <div className={`container ${!this.props.submitted && "defaultPosition"}`}>
               <form className={"form"} onSubmit={(e) => this.props.onSubmitForm(e, this.state)}>
                 {inputsHTML}
-                <button type="submit">Submit</button>
+                <button type="submit" className="submit">Submit</button>
               </form>
           </div>
       );

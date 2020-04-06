@@ -2,8 +2,17 @@
     text-align: left;
     width: 100%;
 }
-
 .form {
     display: flex;
-    justify-content: space-around;
+}
+.autocomplete {
+    flex: 2;
+}
+.submit {
+    flex:1;
+}
+.defaultPosition {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-60px);
 }

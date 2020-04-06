@@ -42,10 +42,12 @@ class App extends React.Component<{}, State> {
     return (
       <div className="App">
         <header className="App-header">
-            Learn React
+            Coronavirus World Tracker
         </header>
-        {Object.keys(this.state.formState) && <SubmittedFormPanel formState={!other ? this.state.formState : null} />}
-        <Form onSubmitForm={this.onSubmitForm} />
+        <div className="App-body">
+          {Object.keys(this.state.formState) && <SubmittedFormPanel formState={!other ? this.state.formState : null} />}
+          <Form onSubmitForm={this.onSubmitForm} submitted={this.state.submitted} />
+        </div>
       </div>
     );
   }
