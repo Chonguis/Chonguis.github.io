@@ -28,6 +28,7 @@ class App extends React.Component<{}, State> {
 
   onSubmitForm = (e: FormEvent<HTMLFormElement>, formState: {country: string; state: string;}) => {
     e.preventDefault();
+    console.log('formstate', formState)
     this.setState({
       submitted: true,
       formState: formState,

@@ -85,6 +85,7 @@ class SubmittedFormPanel extends React.Component<Props, FetchStateInterface> {
                   return;
                 } else {
                   let latest_stats = data.latest_stat_by_country[0];
+                  console.log('latest', latest_stats.total_deaths, typeof latest_stats.total_deaths);
                   this.setState({
                     activeSearch: "country",
 

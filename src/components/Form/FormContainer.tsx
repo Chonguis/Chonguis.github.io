@@ -103,7 +103,7 @@ class Form extends Component<Props, State> {
           <div className={`container ${!this.props.submitted && "defaultPosition"}`}>
               <form className={"form"} onSubmit={(e) => this.props.onSubmitForm(e, this.state)}>
                 {inputsHTML}
-                <button type="submit" className="submit">Submit</button>
+                <button type="submit" className="submit" disabled={!this.state.country}>Submit</button>
               </form>
           </div>
       );

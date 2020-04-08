@@ -8,6 +8,7 @@
 }
 
 .groupResults {
-  display: block;
+  display: flex;
+  flex-flow: column;
   flex: 1;
 }
