@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/typescript-form-excercise/static/css/main.64f0911e.chunk.css",
+    "main.js": "/typescript-form-excercise/static/js/main.80f41b39.chunk.js",
+    "main.js.map": "/typescript-form-excercise/static/js/main.80f41b39.chunk.js.map",
+    "runtime-main.js": "/typescript-form-excercise/static/js/runtime-main.7fc29ecb.js",
+    "runtime-main.js.map": "/typescript-form-excercise/static/js/runtime-main.7fc29ecb.js.map",
+    "static/js/2.c878f4a8.chunk.js": "/typescript-form-excercise/static/js/2.c878f4a8.chunk.js",
+    "static/js/2.c878f4a8.chunk.js.map": "/typescript-form-excercise/static/js/2.c878f4a8.chunk.js.map",
+    "index.html": "/typescript-form-excercise/index.html",
+    "precache-manifest.37666949fe3135e147ebca56842a2164.js": "/typescript-form-excercise/precache-manifest.37666949fe3135e147ebca56842a2164.js",
+    "service-worker.js": "/typescript-form-excercise/service-worker.js",
+    "static/css/main.64f0911e.chunk.css.map": "/typescript-form-excercise/static/css/main.64f0911e.chunk.css.map",
+    "static/js/2.c878f4a8.chunk.js.LICENSE.txt": "/typescript-form-excercise/static/js/2.c878f4a8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7fc29ecb.js",
+    "static/js/2.c878f4a8.chunk.js",
+    "static/css/main.64f0911e.chunk.css",
+    "static/js/main.80f41b39.chunk.js"
+  ]
+}
