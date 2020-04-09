@@ -34,6 +34,7 @@ const DisplayResults:React.FC<Props> = (props) => {
         <div>
           {props.fetchState.activeSearch === "state" && 
             <div className="displayResultsContainer">
+              <em>*State numbers not working correctly, DO NOT TRUST DATA</em>
               <h1>{props.fetchState.state_name}</h1>
               <small>Cases Updated{props.fetchState.record_date}</small>
               <br/>

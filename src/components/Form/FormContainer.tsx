@@ -78,8 +78,11 @@ class Form extends Component<Props, State> {
           <div className={`container ${!this.props.submitted && "defaultPosition"}`}>
               <form className={"form"} onSubmit={(e) => this.props.onSubmitForm(e, this.state)}>
                 {inputsHTML}
-                <button type="submit" className="submit" disabled={!this.state.country}>Submit</button>
+                <button type="submit" className="submit" disabled={!this.state.country}>Submit</button>                
               </form>
+              <small>
+                <em style={{marginTop: "20px", display: "block"}}>API used for data:<a target="_blank" href=" https://rapidapi.com/astsiatsko/api/coronavirus-monitor">https://rapidapi.com/astsiatsko/api/coronavirus-monitor</a></em>
+              </small>
           </div>
       );
   }
