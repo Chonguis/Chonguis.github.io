@@ -81,7 +81,7 @@ class Form extends Component<Props, State> {
                 <button type="submit" className="submit" disabled={!this.state.country}>Submit</button>                
               </form>
               <small>
-                <em style={{marginTop: "20px", display: "block"}}>API used for data:<a target="_blank" href=" https://rapidapi.com/astsiatsko/api/coronavirus-monitor">https://rapidapi.com/astsiatsko/api/coronavirus-monitor</a></em>
+                <em style={{marginTop: "20px", display: "block"}}>API used for data:<a target="_blank" href=" https://rapidapi.com/astsiatsko/api/coronavirus-monitor">https://rapidapi.com/astsiatsko/api/coronavirus-monitor</a></em> 
               </small>
           </div>
       );
