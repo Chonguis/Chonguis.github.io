@@ -54,46 +54,21 @@ class Form extends Component<Props, State> {
     }
   }
 
-  getOptions = (id: string): string[] => {
-    if (id === "country") {
-      if (allCountries){
-        return allCountries;
-      } else {
-        return [""];
-      } 
-    }
-    else if (id === "state") {
-      if (this.state.country === "United States of America"){
-        if (statesArray){
-          return statesArray;
-        } else {
-          return [""];
-        }
-      } else {
-        return [""];
-      }
-    } else {
-      return [""];
-    }
-  }
-
   render() {
 
     let inputsHTML: JSX.Element[] = [];
     
     inputsData.forEach(data => {
-      if (data.id === "state" && this.state.country !== "United States of America") return;
+      if (data.id === "state" && this.state.country !== "USA") return;
       else {
         inputsHTML.push(
           <div className="autocomplete">
             <Autocomplete
               id="combo-box-demo"
-              options={this.getOptions(data.id)}
+              options={data.id === "state" ? statesArray : allCountries.sort()}
               onChange={(event: ChangeEvent<{}>, value: string | null) => this.onChangeSelect(event, value, data.id)}
-              // getOptionLabel={(option) => option.title}
               renderInput={(params) => <TextField {...params} label={data.label} variant="outlined" />}
               value={this.state[data.id]}
-              disabled={this.getOptions(data.id)[0] === ""}
             />
           </div>)
       }
